@@ -1,17 +1,35 @@
 ## Hi there 👋
 
-- TODO: Fill This Org Info + Add Important Dashboards, Metrics, and API endpoints here.
+- Ultimate Consultancy Services is a consulting firm making a positive difference in organizations' and individuals' lives through the provision of advisory, consultancy, research, and training services.
 
+## Platform Architecture
 
-**Here are some ideas to get you started:**
+UCS Ethiopia is supported by a public consulting website and several focused backend services.
+All APIs Service Uptime Status Report: https://ultimate-consultancy-services.betteruptime.com/
 
-- 🙋‍♀️ A short introduction - what is your organization all about?
-- 🌈 Contribution guidelines - how can the community get involved?
-- 👩‍💻 Useful resources - where can the community find your docs? Is there anything else the community should know?
-- 🍿 Fun facts - what does your team eat for breakfast?
-- 🧙 Remember, you can do mighty things with the power of [Markdown](https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+```mermaid
+flowchart TD
+    Visitor[Website visitor] --> Website[ucs-ui<br/>Public Next.js website]
 
-**Dashboards, Metrics, and API endpoints:**
+    Website -->|Contact form| UCS[ucs-service]
+    Website -->|Team profiles| UCS
+    Website -->|Published news| SocialPublic[social-stream public API]
+    Website -->|Economic dashboard| MarketData[market-data API]
 
-- All APIs Service Uptime Status Report: https://ultimate-consultancy-services.betteruptime.com/
+    UCS --> UCSPostgres[(PostgreSQL)]
+    UCS --> TeamFiles[(Team JSON files)]
+    UCS --> Mail[Mailgun or SMTP]
+
+    Admin[Company admin or editor] --> Clerk[Clerk]
+    Admin --> SocialInternal[social-stream internal API]
+    Clerk --> SocialInternal
+
+    SocialInternal --> SocialPostgres[(PostgreSQL)]
+    SocialInternal --> B2[Backblaze B2]
+    SocialInternal --> Platforms[Instagram, Facebook,<br/>LinkedIn, Telegram]
+    SocialInternal --> Audit[Audit logs]
+
+    MarketData --> Redis[(Redis current values)]
+    MarketData --> Mongo[(MongoDB historical series)]
+    MarketData --> Sources[External market APIs<br/>and scheduled scrapers]
 
